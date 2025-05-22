@@ -1,0 +1,32 @@
+async function handler({ taskId }) {
+  if (!taskId) {
+    return { error: "Task ID is required" };
+  }
+
+  try {
+    const task = global._videoTasks?.get(taskId);
+
+    if (!task) {
+      return {
+        status: "failed",
+        error: "Task not found",
+      };
+    }
+
+    const response = {
+      status: task.status,
+      progress: task.progress || 0,
+      videoUrl: task.videoUrl,
+      error: task.error,
+    };
+
+    return response;
+  } catch (error) {
+    return {
+      status: "failed",
+      error: error.message || "Failed to check video status",
+    };
+  }
+}
+
+
